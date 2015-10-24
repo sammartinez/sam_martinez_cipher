@@ -9,7 +9,7 @@ function shift_cipher_menu() {
         'access callback' => TRUE,
         'type' => MENU_NORMAL_ITEM,
     );
-        $items['shift_cipher_success_page'] = array(
+    $items['shift_cipher_success_page'] = array(
         'title' => 'Success',
         'page callback' => 'shift_cipher_success',
         'access callback' => TRUE,
@@ -62,13 +62,33 @@ function element_validate_direction($element) {
 
 function shift_cipher_form_submit($form, &$form_state) {
     $value = $form_state['values']['shift_value'];
-    $direction = $form_state['values']['shift_direction'];
-    $phrase = $form_state['values']['phrase'];
-    $encyrption_output = 'Test';
+    $direction = strtolower($form_state['values']['shift_direction']);
+    $phrase = strtolower($form_state['values']['phrase']);
 
-    //Method in order to solve this shifting goes here.
+    if(strtolower($direction) == 'left') {
+        $value = $value * -1;
+    }
 
-    $_SESSION['encyrption_success_output'] = $encyrption_output;
+    $split_phrase = str_split($phrase, 1);
+
+    $alphabet = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+
+    foreach($split_phrase as &$letter) {
+        if(in_array($letter, $alphabet)) {
+            $index = array_search($letter, $alphabet) + $value;
+
+            if($index > 25) {
+                $index = $index - 26;
+            } elseif($index < 0) {
+                $index = $index + 26;
+            } else {
+                $letter = $alphabet[$index];
+            }
+        }
+    }
+
+    $output = implode('', $split_phrase);
+    $_SESSION['encyrption_success_output'] = $output;
     $form_state['redirect'] = 'shift_cipher_success_page';
 }
 
