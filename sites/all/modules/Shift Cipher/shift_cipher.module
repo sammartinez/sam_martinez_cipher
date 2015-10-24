@@ -67,10 +67,12 @@ function shift_cipher_form_submit($form, &$form_state) {
     $split_phrase = str_split($phrase, 1);
     $alphabet = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
 
+    //Will shift left but does not go back through the alphabet array.
     if(strtolower($direction) == 'left') {
         $value = $value * -1;
     }
 
+    //Method used in order to replace letters with other letters.
     foreach($split_phrase as &$letter) {
         if(in_array($letter, $alphabet)) {
             $index = array_search($letter, $alphabet) + $value;
