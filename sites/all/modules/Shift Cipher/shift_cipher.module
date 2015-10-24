@@ -1,0 +1,77 @@
+<?php
+
+function shift_cipher_menu() {
+    $items = array();
+    $items['shift_cipher'] = array(
+        'title' => 'Shift Cipher',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('shift_cipher_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+        $items['shift_cipher_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'shift_cipher_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function shift_cipher_form() {
+    $form['shift_value'] = array(
+        '#title' => 'Shift Value',
+        '#type' => 'textfield',
+        '#description' => t('Please enter a shifting value'),
+        '#element_validate' => array('element_validate_range'),
+        '#required' => TRUE,
+    );
+    $form['shift_direction'] = array(
+        '#title' => 'Shift direction',
+        '#type' => 'textfield',
+        '#description' => t('Please enter a shifting direction (left or right)'),
+        '#element_validate' => array('element_validate_direction'),
+        '#required' => TRUE,
+    );
+    $form['phrase'] = array(
+        '#title' => 'Phrase',
+        '#type' => 'textfield',
+        '#description' => t('Please enter a Phrase'),
+        '#required' => TRUE,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Encyrpt!',
+    );
+
+    return $form;
+}
+
+function element_validate_range($element) {
+    if ($element['#value'] > 26 || $element['#value'] < 1) {
+        form_error($element, t('Number must be less than 26 or greater than 1.'));
+    }
+}
+
+function element_validate_direction($element) {
+    if((!$element['#value'] == 'left') || (!$element['#value'] == 'right')) {
+        form_error($element, t('The direction must be left or right..'));
+    }
+}
+
+function shift_cipher_form_submit($form, &$form_state) {
+    $value = $form_state['values']['shift_value'];
+    $direction = $form_state['values']['shift_direction'];
+    $phrase = $form_state['values']['phrase'];
+    $encyrption_output = 'Test';
+
+    //Method in order to solve this shifting goes here.
+
+    $_SESSION['encyrption_success_output'] = $encyrption_output;
+    $form_state['redirect'] = 'shift_cipher_success_page';
+}
+
+function shift_cipher_success() {
+    return $_SESSION['encyrption_success_output'];
+}

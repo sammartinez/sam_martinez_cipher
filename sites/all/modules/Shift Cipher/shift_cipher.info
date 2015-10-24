@@ -1,0 +1,5 @@
+name = Shift Cipher
+description = This module will shift a letter to another one in order to encyrpt the output.
+package = Custom Sam Modules
+core = 7.x
+files[] = shift_cipher.module
