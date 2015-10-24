@@ -64,20 +64,18 @@ function shift_cipher_form_submit($form, &$form_state) {
     $value = $form_state['values']['shift_value'];
     $direction = strtolower($form_state['values']['shift_direction']);
     $phrase = strtolower($form_state['values']['phrase']);
+    $split_phrase = str_split($phrase, 1);
+    $alphabet = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
 
     if(strtolower($direction) == 'left') {
         $value = $value * -1;
     }
 
-    $split_phrase = str_split($phrase, 1);
-
-    $alphabet = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
-
     foreach($split_phrase as &$letter) {
         if(in_array($letter, $alphabet)) {
             $index = array_search($letter, $alphabet) + $value;
 
-            if($index > 25) {
+            if($index > 26) {
                 $index = $index - 26;
             } elseif($index < 0) {
                 $index = $index + 26;
